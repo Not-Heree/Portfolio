@@ -27,21 +27,52 @@
       position: relative;
       z-index: 1;
       height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 100vw;
+    }
+    .intro-text {
+      position: absolute;
+      top: 18vh;
+      left: 8vw;
+    }
+    .center-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
     h1 {
       font-size: 3rem;
       font-weight: 500;
       letter-spacing: 0.05em;
     }
+    .white {
+      color: #ffffff;
+    }
+    .name {
+      color: #8ab4f8; /* pixel-like blue tint */
+    }
+    .nothere {
+      font-size: 4rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: #080b18; /* very dark blue/blackish */
+    }
   </style>
 </head>
 <body>
   <canvas id="bg"></canvas>
+
   <div class="content">
-    <h1>Hi, I am bishwas</h1>
+    <div class="intro-text">
+      <h1>
+        <span class="white">I am</span>
+        <span class="name"> Bishwas Thapa.</span>
+      </h1>
+    </div>
+
+    <div class="center-text">
+      <div class="nothere">Nothere</div>
+    </div>
   </div>
 
   <script>
@@ -79,8 +110,8 @@
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
         this.radius = 2;
-        this.speedX = (Math.random() - 0.5) * 0.7;
-        this.speedY = (Math.random() - 0.5) * 0.7;
+        this.speedX = (Math.random() - 0.5) * 0.4;
+        this.speedY = (Math.random() - 0.5) * 0.4;
       }
       draw() {
         ctx.beginPath();
@@ -92,19 +123,24 @@
         this.x += this.speedX;
         this.y += this.speedY;
 
-        // bounce off edges
         if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
         if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
 
-        // slight attraction to mouse
         if (mouse.x !== null && mouse.y !== null) {
           const dx = mouse.x - this.x;
           const dy = mouse.y - this.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 150) {
-            const force = (150 - dist) / 150;
-            this.x -= (dx / dist) * force * 0.7;
-            this.y -= (dy / dist) * force * 0.7;
+
+          const radius = 150;
+          const strength = 0.03;
+
+          if (dist > 0 && dist < radius) {
+            const force = (radius - dist) / radius;
+            const directionX = -dx / dist; // repel
+            const directionY = -dy / dist;
+
+            this.x += directionX * force * strength * 60;
+            this.y += directionY * force * strength * 60;
           }
         }
 
