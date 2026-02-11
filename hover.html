@@ -2,123 +2,280 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Bishwas</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>thapabishwas | Security Researcher</title>
+  
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/Not-Heree/Portfolio/refs/heads/secondbranch/logo%20.png" />
+
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root {
+      --neon-yellow: #FFFF00;
+      --neon-dim: rgba(255, 255, 0, 0.2);
+      --bg-color: #050505;
+      --text-white: #e0e0e0;
+      --terminal-gray: #888;
     }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-      background: #000000;
-      color: #ffffff;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg-color);
+      color: var(--text-white);
+      /* Monospaced font is crucial for hacker vibes */
+      font-family: 'Courier New', Courier, monospace; 
       height: 100vh;
       overflow: hidden;
       position: relative;
     }
-    canvas {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-    }
+
+    canvas { position: fixed; inset: 0; z-index: 0; }
+
     .content {
       position: relative;
       z-index: 1;
       height: 100vh;
+      width: 100vw;
+      /* Scanline overlay */
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+      background-size: 100% 2px, 3px 100%;
+      pointer-events: none;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    h1 {
-      font-size: 3rem;
-      font-weight: 500;
-      letter-spacing: 0.05em;
+    
+    .container {
+        pointer-events: auto;
+        width: 90%;
+        max-width: 800px;
+        background: rgba(0, 0, 0, 0.6);
+        padding: 40px;
+        border-left: 2px solid var(--neon-yellow);
+        backdrop-filter: blur(2px);
+    }
+
+    /* --- GLITCH NAME STYLES --- */
+    .identity {
+        margin-bottom: 20px;
+    }
+
+    .prompt { color: var(--terminal-gray); font-size: 1.2rem; }
+    
+    h1.glitch {
+      font-size: 3.5rem;
+      font-weight: 700;
+      text-transform: lowercase;
+      position: relative;
+      color: var(--neon-yellow);
+      text-shadow: 0 0 10px var(--neon-dim);
+    }
+
+    /* Glitch Animation Keyframes */
+    @keyframes glitch-skew {
+      0% { transform: skew(0deg); }
+      20% { transform: skew(-2deg); }
+      40% { transform: skew(2deg); }
+      60% { transform: skew(-1deg); }
+      80% { transform: skew(1deg); }
+      100% { transform: skew(0deg); }
+    }
+    
+    h1.glitch::before, h1.glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-color);
+    }
+    
+    h1.glitch::before {
+      left: 2px;
+      text-shadow: -1px 0 #ff00c1;
+      clip: rect(44px, 450px, 56px, 0);
+      animation: glitch-anim 5s infinite linear alternate-reverse;
+    }
+    
+    h1.glitch::after {
+      left: -2px;
+      text-shadow: -1px 0 #00fff9;
+      clip: rect(44px, 450px, 56px, 0);
+      animation: glitch-anim2 5s infinite linear alternate-reverse;
+    }
+
+    @keyframes glitch-anim {
+      0% { clip: rect(10px, 9999px, 30px, 0); }
+      20% { clip: rect(60px, 9999px, 80px, 0); }
+      40% { clip: rect(20px, 9999px, 90px, 0); }
+      60% { clip: rect(80px, 9999px, 10px, 0); }
+      80% { clip: rect(40px, 9999px, 50px, 0); }
+      100% { clip: rect(70px, 9999px, 20px, 0); }
+    }
+    @keyframes glitch-anim2 {
+      0% { clip: rect(50px, 9999px, 10px, 0); }
+      20% { clip: rect(20px, 9999px, 90px, 0); }
+      40% { clip: rect(80px, 9999px, 50px, 0); }
+      60% { clip: rect(10px, 9999px, 60px, 0); }
+      80% { clip: rect(30px, 9999px, 40px, 0); }
+      100% { clip: rect(90px, 9999px, 20px, 0); }
+    }
+
+    /* --- BIO CONSOLE STYLES --- */
+    .console-lines {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        min-height: 150px;
+    }
+    .line { display: block; margin-bottom: 5px; opacity: 0; animation: fadeIn 0.2s forwards; }
+    .highlight { color: #fff; font-weight: bold; }
+    .command { color: var(--neon-yellow); margin-right: 10px; }
+
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    /* --- SOCIAL ICONS --- */
+    .social-icons {
+      display: flex;
+      gap: 25px;
+      margin-top: 30px;
+      border-top: 1px dashed #333;
+      padding-top: 20px;
+    }
+
+    .icon-link {
+      width: 28px;
+      height: 28px;
+      transition: transform 0.2s;
+    }
+    
+    .icon-link svg {
+      fill: #666;
+      transition: 0.3s;
+    }
+    
+    .icon-link:hover { transform: scale(1.1); }
+    .icon-link:hover svg { fill: var(--neon-yellow); filter: drop-shadow(0 0 5px var(--neon-yellow)); }
+
+    /* Mobile Responsive */
+    @media (max-width: 600px) {
+        h1.glitch { font-size: 2.5rem; }
+        .container { width: 95%; padding: 20px; }
+        .console-lines { font-size: 0.9rem; }
     }
   </style>
 </head>
 <body>
+  
   <canvas id="bg"></canvas>
+
   <div class="content">
-    <h1>Hi, I am bishwas</h1>
+    <div class="container">
+        
+        <!-- IDENTITY SECTION -->
+        <div class="identity">
+            <span class="prompt">root@system:~# whoami</span>
+            <h1 class="glitch" data-text="thapabishwas">thapabishwas</h1>
+        </div>
+
+        <!-- BIO SECTION (Types out automatically) -->
+        <div class="console-lines" id="console"></div>
+
+        <!-- SOCIALS -->
+        <div class="social-icons">
+             <!-- GitHub -->
+            <a href="https://github.com/Not-Heree" target="_blank" class="icon-link">
+              <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405 1.02 0 2.04.135 3 .405 2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.285 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            </a>
+            <!-- LinkedIn -->
+            <a href="https://www.linkedin.com/in/thapa-bishwas-a764962a1" target="_blank" class="icon-link">
+              <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+            <!-- Add other icons here if needed -->
+        </div>
+    </div>
   </div>
 
   <script>
+    /* ----------------------------------------------------
+       1. TYPEWRITER EFFECT FOR BIO
+    ----------------------------------------------------- */
+    const consoleDiv = document.getElementById('console');
+    // This is the data that gets typed out.
+    const logData = [
+      { label: "ROLE", val: "Security Researcher" },
+      { label: "STATUS", val: "Learning... Growing... Evolving..." },
+      { label: "INTERESTS", val: "Hardware / Software / Low-level" },
+      { label: "OBJECTIVE", val: "To Learn & Exploit Systems" },
+      { label: "PRONOUNS", val: "He/Him" }
+    ];
+
+    let lineIndex = 0;
+
+    function typeLine() {
+      if (lineIndex < logData.length) {
+        const item = logData[lineIndex];
+        const p = document.createElement('div');
+        p.className = 'line';
+        p.innerHTML = `<span class="command">[+] ${item.label}:</span> <span class="highlight">${item.val}</span>`;
+        consoleDiv.appendChild(p);
+        lineIndex++;
+        setTimeout(typeLine, 400); // Speed of typing new lines
+      }
+    }
+
+    // Start typing after a short delay
+    setTimeout(typeLine, 500);
+
+
+    /* ----------------------------------------------------
+       2. PARTICLE BACKGROUND (Yellow)
+    ----------------------------------------------------- */
     const canvas = document.getElementById("bg");
     const ctx = canvas.getContext("2d");
-
     let particles = [];
-    const particleCount = 80;
-    const maxDistance = 120;
-
+    const particleCount = 60;
+    const maxDistance = 140;
     let mouse = { x: null, y: null };
 
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.addEventListener("resize", resizeCanvas);
     resizeCanvas();
-
-    window.addEventListener("mousemove", (e) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-    });
-
-    window.addEventListener("mouseleave", () => {
-      mouse.x = null;
-      mouse.y = null;
-    });
+    window.addEventListener("mousemove", (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+    window.addEventListener("mouseleave", () => { mouse.x = null; mouse.y = null; });
 
     class Particle {
-      constructor() {
-        this.init();
-      }
+      constructor() { this.init(); }
       init() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.radius = 2;
-        this.speedX = (Math.random() - 0.5) * 0.7;
-        this.speedY = (Math.random() - 0.5) * 0.7;
+        this.radius = Math.random() * 1.5 + 0.5;
+        this.speedX = (Math.random() - 0.5) * 0.4;
+        this.speedY = (Math.random() - 0.5) * 0.4;
       }
       draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(255,255,255,0.8)";
+        ctx.fillStyle = "rgba(255, 255, 0, 0.7)"; // Yellow dots
         ctx.fill();
       }
       update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-
-        // bounce off edges
+        this.x += this.speedX; this.y += this.speedY;
         if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
         if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-
-        // slight attraction to mouse
-        if (mouse.x !== null && mouse.y !== null) {
-          const dx = mouse.x - this.x;
-          const dy = mouse.y - this.y;
+        if (mouse.x) {
+          const dx = mouse.x - this.x; const dy = mouse.y - this.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < 150) {
             const force = (150 - dist) / 150;
-            this.x -= (dx / dist) * force * 0.7;
-            this.y -= (dy / dist) * force * 0.7;
+            this.x -= (dx/dist) * force * 1.5;
+            this.y -= (dy/dist) * force * 1.5;
           }
         }
-
         this.draw();
       }
     }
 
-    function initParticles() {
-      particles = [];
-      for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle());
-      }
-    }
-
+    function initParticles() { particles = []; for(let i=0; i<particleCount; i++) particles.push(new Particle()); }
     function connectParticles() {
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
@@ -126,26 +283,22 @@
           const dy = particles[i].y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < maxDistance) {
-            ctx.strokeStyle = "rgba(255,255,255," + (1 - dist / maxDistance) * 0.3 + ")";
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
+            ctx.strokeStyle = "rgba(255, 255, 0," + (1 - dist / maxDistance) * 0.3 + ")"; // Yellow Lines
+            ctx.lineWidth = 0.5;
+            ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
           }
         }
       }
     }
-
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach((p) => p.update());
+      particles.forEach(p => p.update());
       connectParticles();
       requestAnimationFrame(animate);
     }
-
     initParticles();
     animate();
   </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"bc2ca4b651a94b58b1df0f046c327a67","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
